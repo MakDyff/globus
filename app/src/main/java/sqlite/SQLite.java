@@ -14,7 +14,7 @@ import java.util.List;
  */
 class SQLite extends SQLiteOpenHelper {
     private volatile static SQLite _sqLite;
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private volatile Boolean _bool;
 

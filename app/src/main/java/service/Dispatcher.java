@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+
+import cache.Valute;
 
 public class Dispatcher {
 
-    public String request() throws Exception {
+    private String request() throws Exception {
         String TAG = "TEST";
         HttpURLConnection connection = openConnection();
         StringBuffer response = new StringBuffer();
@@ -25,7 +28,7 @@ public class Dispatcher {
             Log.i(TAG, "Response code: $responseCode");
 
             while((bytesRead = connection.getInputStream().read(contents)) != -1) {
-                response.append(new String(contents, 0, bytesRead));
+                response.append(new String(contents, 0, bytesRead, "windows-1251"));
             }
 
             if(responseCode > 400)
@@ -52,6 +55,14 @@ public class Dispatcher {
         }
 
         return response.toString();
+    }
+
+    public List<Valute> getValutes() throws Exception {
+        String xml = request();
+        ServiceResponses service =  new ServiceResponses<Valute>(Valute.class);
+        service.parse(xml);
+
+        return service.getObjectList();
     }
 
     private HttpURLConnection openConnection() throws IOException {
