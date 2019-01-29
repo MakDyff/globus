@@ -12,6 +12,7 @@ import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ class ServiceResponses<T> extends DefaultHandler {
     private int current_field;
     private String current_value;
     private final Field[] fields;
+    private DecimalFormat _formatter;
 
     private final HashMap<String, Integer> _hashMap;
 
@@ -57,6 +59,12 @@ class ServiceResponses<T> extends DefaultHandler {
 
         fields = _class.getFields();
         current_value  = "";
+
+        _formatter = new DecimalFormat();
+        DecimalFormatSymbols symbol = new DecimalFormatSymbols();
+        // Specify the decimal separator symbol
+        symbol.setDecimalSeparator(',');
+        _formatter.setDecimalFormatSymbols(symbol);
 
         fillHashMap();
     }
@@ -115,8 +123,9 @@ class ServiceResponses<T> extends DefaultHandler {
                         value = Boolean.valueOf(boolStr);
                     else
                         value = "1".equalsIgnoreCase(boolStr);
-                } else if (Double.class.isAssignableFrom(type) || double.class.isAssignableFrom(type))
-                    value = Double.valueOf(value.toString());
+                } else if (Double.class.isAssignableFrom(type) || double.class.isAssignableFrom(type)) {
+                    value = _formatter.parse(value.toString()).doubleValue();
+                }
 
                 Object obj = _objectList.get(_objectList.size() - 1);
                 _class.getField(field.getName()).set(obj, value);

@@ -7,5 +7,5 @@ public class Valute implements Serializable {
     public String CharCode;
     public int Nominal;
     public String Name;
-    public float Value;
+    public Double Value;
 }

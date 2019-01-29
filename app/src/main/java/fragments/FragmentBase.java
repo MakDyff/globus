@@ -28,7 +28,7 @@ public class FragmentBase<TEnum extends Enum<TEnum>, TNavigation extends Navigat
     }
 
     protected void progressShow(String message) {
-        if(message.length() == 0)
+        if(message == null || message.length() == 0)
              message = "Ожидайте...";
 
         _dialog.setMessage(message);
