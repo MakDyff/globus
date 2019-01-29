@@ -91,11 +91,11 @@ public class FirstFragment extends FragmentBase<NavigationType, MainNavigation> 
         super.onStart();
 
         List<Valute> v = App.SqlCon.getObjectList(Valute.class);
-        if (v == null || v.size() != 0)
+        if (v == null || v.size() == 0)
             updateCache();
         else {
             _valutes.addAll(v);
-            _ad.notifyDataSetChanged();
+            updateCache();
         }
     }
 
@@ -105,17 +105,17 @@ public class FirstFragment extends FragmentBase<NavigationType, MainNavigation> 
         pool.submit(new Runnable() {
             @Override
             public void run() {
-                _valutes.clear();
-
                 try {
                     List tmp = App.Disp.getValutes();
+
+                    _valutes.clear();
                     _valutes.addAll(tmp);
+
+                    App.SqlCon.delete(Valute.class);
+                    App.SqlCon.setObjects(Valute.class, _valutes);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                App.SqlCon.delete(Valute.class);
-                App.SqlCon.setObjects(Valute.class, _valutes);
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override

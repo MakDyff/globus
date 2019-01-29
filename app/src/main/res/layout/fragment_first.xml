@@ -9,7 +9,7 @@
         android:id="@+id/fragment_first_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update cache"/>
+        android:text="Обновление информации"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
         android:id="@+id/fragment_first_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"
+        android:text="0.0"
         android:textColor="@android:color/black"
         android:textSize="18dp"/>
 
